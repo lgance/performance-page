@@ -15,9 +15,8 @@ function GridRow(rowData:any,clickRef:any){
 
   let metric_correction_value = Math.round(metric_value)+"ms";
  
-  console.warn('Metric Row');
   useEffect(()=>{
-      console.warn('Browser Row Code');
+    
   },[])
 
 

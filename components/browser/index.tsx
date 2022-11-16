@@ -1,4 +1,6 @@
-import { browser } from 'process';
+import dynamic from 'next/dynamic';
+const ApexCharts = dynamic(()=> import('react-apexcharts'),{ssr:false});
+
 import { useEffect ,useState,useCallback} from 'react';
 import {onLCP, onFID, onCLS} from 'web-vitals';
 import GridRow from './GridRow';
@@ -8,6 +10,45 @@ import GridRow from './GridRow';
 // 리스트 샘플입니다.
 function BrowserComponent(){
 
+
+  let [webTestData,setWebTestData]:any = useState([
+     
+  ])
+  let state:any = {
+    series: [{
+      name: "Test Metric",
+      data: webTestData
+    },
+  ],
+
+    options: {  
+      chart: {
+        zoom: {
+          enabled: false
+        }
+      },
+      dataLabels: {
+        enabled: true
+      },
+      stroke: {
+        curve: 'straight'
+      },
+      title: {
+        text: 'Web Test Performance Data',
+        align: 'left'
+      },
+      grid: {
+        row: {
+          colors: ['#f3f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+          opacity: 0.5
+        },
+      },
+      xaxis: {
+        categories: 
+        ['Total', 'Redirect', 'Cache', 'Dnslookup', 'Connect(TCP)', 'Request', 'Response', 'DOM Rendering', 'Load','PageEnd','NetworkDelay'],
+      }
+    }
+  }
 
   let [isMeasureState,setMeasureState] = useState(false);
   let [browserData,setBrowserData] = useState([
@@ -92,33 +133,17 @@ function BrowserComponent(){
         total,redirect,cache,dnslookup,connect,request,response,dom,load,pageEnd,networkDelay
       ]
      
+      let newMetric_values = metric_keys.map((item:number)=>{
+          return Math.round(item);
+      })
+      
+      setWebTestData(newMetric_values);
+
       let updateMetric = browserData.map((item:any,index:number)=>{
         return {...item,["metric_value"]:metric_keys[index]}
       });
-        
-      console.warn(updateMetric);
-
       setBrowserData(updateMetric);
       setMeasureState(true);
-      const [entry] = performance.getEntriesByType("navigation");
-
-      // Show it in a nice table in the developer console
-      // console.table(entry.toJSON());
-
-      // console.log("total : " + total + "ms  >>>>>>>  전체 소요시간");
-      // console.log("redirect : " + redirect + "ms  >>>>>>>   동일 origin에서의 redirect 시간");
-      // console.log("cache : " + cache + "ms   >>>>>>>  cache 시간");
-      // console.log("dnslookup : " + dnslookup + "ms  >>>>>>>  DNS Lookup 시간");
-      // console.log("connect : " + connect + "ms  >>>>>>>  웹서버 연결 시간");
-      // console.log("request : " + request + "ms  >>>>>>>  요청 소요 시간");
-      // console.log("response : " + response + "ms  >>>>>>>  첫 응답으로 부터 응답 데이터를 모두 받은 시간");
-      // console.log("dom : " + dom + "ms  >>>>>>>  DOM객체 로드 완료 시간");
-      // console.log("load : " + load + "ms  >>>>>>>  브라우저의 Load 이벤트 실행시간");
-      // console.log("pageEnd : " + pageEnd + "ms  >>>>>>>  서버에서 페이지를 받고 페이지를 로드하는데 걸린 시간");
-      // console.log('Network Delay : ' + networkDelay +"ms >>>>>>  네트워크 지연시간 ")
-
-      // console.warn(ntime);
-
       
       // onCLS(console.log);
       // onFID(console.log);
@@ -154,7 +179,21 @@ function BrowserComponent(){
             </table>
         </div>
       </div>
-
+      <div>
+        <div className="chart-wrap">
+            {isMeasureState===false?'데이터 렌더링 중 ':
+              <div>
+                <ApexCharts
+                options={state.options}
+                series={state.series}
+                typs='line'
+                width={"90%"}
+                height={450}  
+                />
+            </div>
+            }
+        </div>
+      </div>
       <style jsx>{`
         .api-grid-title{
           display:flex;
@@ -167,7 +206,10 @@ function BrowserComponent(){
   
           margin-bottom:20px;
         }
+        .chart-wrap {
+          padding:5px 5px;
 
+        }
         div.task-status {
           display:flex;
           flex-flow:column nowrap;

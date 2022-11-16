@@ -3,6 +3,25 @@ import Head from 'next/head'
 import BrowserComponent from '../components/browser'
 import TestPerformanceComponent from '../components/TestPerformance'
 
+
+let NCPTestData = [
+  {"type":"GET","url":"https://sg.object.ncloudstorage.com/sg-ncp-obs-for-ngc/test_image.JPG"},
+  {"type":"GET","url":""},
+  {"type":"GET","url":""},
+  {"type":"GET","url":""},
+];
+
+
+let AWSTestData =[
+  {"type":"GET","url":"aws"},
+  {"type":"GET","url":""},
+  {"type":"GET","url":""},
+  {"type":"GET","url":""},
+]
+
+
+
+
 const Home: NextPage = () => {
   return (
     <>
@@ -14,8 +33,9 @@ const Home: NextPage = () => {
 
       <BrowserComponent/>
 
-      <TestPerformanceComponent vendor={"AWS"}/>
-      <TestPerformanceComponent vendor={"NCP"}/>
+      <TestPerformanceComponent vendor={"AWS"} testRow={NCPTestData} />
+
+      <TestPerformanceComponent vendor={"NCP"} testRow={AWSTestData} />
 
     </>
   )
