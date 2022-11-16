@@ -6,7 +6,7 @@ import TestPerformanceComponent from '../components/TestPerformance'
 
 let NCPTestData = [
   {"type":"GET","url":"https://sg.object.ncloudstorage.com/sg-ncp-obs-for-ngc/test_image.JPG"},
-  {"type":"GET","url":""},
+  {"type":"SQL","url":"DB SQL Query 확인"},
   {"type":"GET","url":""},
   {"type":"GET","url":""},
 ];
@@ -18,9 +18,6 @@ let AWSTestData =[
   {"type":"GET","url":""},
   {"type":"GET","url":""},
 ]
-
-
-
 
 const Home: NextPage = () => {
   return (

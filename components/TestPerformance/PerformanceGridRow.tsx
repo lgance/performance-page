@@ -36,17 +36,38 @@ function PerformanceGridRow(rowData:any,clickRef:any){
 
       setStatus('START');
 
+      // 시작 시간 
+      let startTime = performance.now();
+
       if(type==='GET'){
-        let response = await axios.get(url);
-        console.warn(response);
-      }
+        let {data:{type,arrayBuffer}} = await axios.get('/api/cloud_storage',{params:{url:url}});
 
-      await testSleep();
+        // 종료 시간
+        let endTime = performance.now();
+        let totalTime = Math.round(endTime-startTime)+'ms';
 
+        const blob = await new Blob([Uint8Array.from(arrayBuffer)], { type });
+        // <a> 태그의 href 속성값으로 들어갈 다운로드 URL
+        const downloadUrl = window.URL.createObjectURL(blob);
 
-      setStatus('COMPLETE');
-    } catch (error:any) {
+        setResponseData(type)
+        setDelay(totalTime);
       
+      }
+      else if(type==='SQL'){
+        let {data} = await axios.get('/api/sql');
+
+
+        console.warn(data);
+        let endTime = performance.now();
+        let totalTime = Math.round(endTime-startTime)+'ms';
+
+        setResponseData("test");
+        setDelay(totalTime)
+      }
+      setStatus('COMPLETE');
+
+    } catch (error:any) {
 
       setStatus('COMPLETE');
       if(error.response){
