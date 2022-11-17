@@ -1,9 +1,6 @@
 import React from 'react';
 import { useEffect ,useCallback ,useState } from 'react';
-import getConfig from 'next/config';
 import axios from 'axios';
-import { useRouter } from 'next/router'
-import { setDefaultResultOrder } from 'dns';
 
 function PerformanceGridRow(rowData:any,clickRef:any){
   const {
@@ -17,9 +14,7 @@ function PerformanceGridRow(rowData:any,clickRef:any){
   const [ status,  setStatus] = useState('READY'); // READY / START / COMPLETE 
   const [ delay , setDelay ] = useState('NOT Measure');
   const [ responseData ,setResponseData ] = useState('NOT RECV');
-  useEffect(()=>{
 
-  },[])
 
  
   const trigger_API = useCallback(async(e:any)=>{
@@ -87,7 +82,7 @@ function PerformanceGridRow(rowData:any,clickRef:any){
       console.warn(error);
       
     }
-  },[]);
+  },[type,url,vendor]);
 
   return (
   <>

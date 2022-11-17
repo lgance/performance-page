@@ -1,10 +1,8 @@
-import dynamic from 'next/dynamic';
-const ApexCharts = dynamic(()=> import('react-apexcharts'),{ssr:false});
 
 import { useEffect ,useState,useCallback} from 'react';
-import {onLCP, onFID, onCLS} from 'web-vitals';
+import ChartComponent from '../charts';
+// import {onLCP, onFID, onCLS} from 'web-vitals';
 import GridRow from './GridRow';
-
 
 
 // 리스트 샘플입니다.
@@ -14,42 +12,7 @@ function BrowserComponent(){
   let [webTestData,setWebTestData]:any = useState([
      
   ])
-  let state:any = {
-    series: [{
-      name: "Test Metric",
-      data: webTestData
-    },
-  ],
-
-    options: {  
-      chart: {
-        zoom: {
-          enabled: false
-        }
-      },
-      dataLabels: {
-        enabled: true
-      },
-      stroke: {
-        curve: 'straight'
-      },
-      title: {
-        text: 'Web Test Performance Data',
-        align: 'left'
-      },
-      grid: {
-        row: {
-          colors: ['#f3f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-          opacity: 0.5
-        },
-      },
-      xaxis: {
-        categories: 
-        ['Total', 'Redirect', 'Cache', 'Dnslookup', 'Connect(TCP)', 'Request', 'Response', 'DOM Rendering', 'Load','PageEnd','NetworkDelay'],
-      }
-    }
-  }
-
+ 
   let [isMeasureState,setMeasureState] = useState(false);
   let [browserData,setBrowserData] = useState([
     {
@@ -109,7 +72,7 @@ function BrowserComponent(){
           />
         )
     })
-  },[browserData])
+  },[])
 
   useEffect(()=>{
     
@@ -150,7 +113,7 @@ function BrowserComponent(){
       // onLCP(console.log);
     },2000)
 
-  },[])
+  },[browserData])
 
   return (
   <>
@@ -183,13 +146,7 @@ function BrowserComponent(){
         <div className="chart-wrap">
             {isMeasureState===false?'데이터 렌더링 중 ':
               <div>
-                <ApexCharts
-                options={state.options}
-                series={state.series}
-                typs='line'
-                width={"90%"}
-                height={450}  
-                />
+               <ChartComponent webTestData={webTestData}/>
             </div>
             }
         </div>

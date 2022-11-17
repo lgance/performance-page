@@ -69,7 +69,7 @@ function TestPerformance(props:any,clickRef:any){
           />
         )
     })
-  },[performanceList])
+  },[vendor])
 
 
   return (
