@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import * as dbms from '../../dbms'
+import * as dbms from '../../ncpdbms'
 import * as mysql from 'mysql2/promise';
 
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -12,9 +12,13 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   const { url } = req.query;
+  
   const sql = `
-   select * from scenario_tb
+   select * from ncpdb
   `;
+
+
+  
   const values:any = [];
   const conn:poolConnection = await dbms.DB.getPoolConnection();
 

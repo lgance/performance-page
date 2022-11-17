@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect ,useState,useCallback, useRef} from 'react';
 
 import PerformanceGridRow from './PerformanceGridRow';
@@ -6,29 +7,65 @@ import PerformanceGridRow from './PerformanceGridRow';
 
 
 // 리스트 샘플입니다.
-function TestPerformance(props:any){
+function TestPerformance(props:any,clickRef:any){
   let { vendor ,testRow } = props;
 
+
+  
   let [performanceList,setPerformanceList] = useState(testRow);
+
+  const [ URLString,setUrlString] = useState('');
 
   const buttonRef:any = useRef<[]>([]);
 
+
+
+  const urlChange = useCallback((e:any)=>{
+    let _target = e.target.value.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+
+    setUrlString(_target);
+
+  },[]);
+
+
   const AllTestStart = useCallback(()=>{
-    alert("전체 테스트 시작합니다.");
     for(let i=0;i<performanceList.length;i++){
-      buttonRef.current[i].click();
+
+
+      if(performanceList[i]['url'].length<4){
+        // is not Exist TC not Click
+      }
+      else{
+        buttonRef.current[i].click();
+      }
+      
     }
-    },[performanceList])
+    },[performanceList]);
+
+
+    const AddTestCase = useCallback(()=>{
+
+      console.warn('test');
+        let tcObject={
+          "type":"GET",
+          "TC":"메모리에 올라간 TC입니다.",
+          "url":URLString
+        }
+        let addObject = Object.assign({},tcObject);
+        setPerformanceList([...performanceList,addObject])
+    },[URLString,performanceList])
 
   const renderPerformanceList = useCallback((browserDataArray:any)=>{
     return browserDataArray.map((row:any,index:number)=>{
         return (
           <PerformanceGridRow 
             key={index}
+            tc={row.TC}
             type={row.type}
             url={row.url}
             refIndex={index}
             ref={buttonRef}
+            vendor={vendor}
           />
         )
     })
@@ -40,24 +77,28 @@ function TestPerformance(props:any){
      <div>
         <div className="vendor-header">
           <h3>Target Vendor {vendor} </h3>
-          <button>
-            <span onClick={()=> AllTestStart()} className="btn-text">전체 테스트 시작</span>
+          <button ref={ref=>clickRef.current[vendor] = ref} onClick={()=> AllTestStart()}>
+            <span  className="btn-text">[{vendor}] 전체 테스트 시작 </span>
           </button>
         </div>
 
-        <div className="input-layer">
-          <button>
-            <span className="btn-text">추가</span>
-          </button>
-          <label>GET 으로 호출할 주소 </label>
-          <div><input /></div>
-        
-        </div>
+        {vendor==='USER' ?  
+          <div className="input-layer">
+            <button>
+              <span className="btn-text" onClick={()=>AddTestCase()}>추가</span>
+            </button>
+            <label>GET 으로 호출할 주소 </label>
+            <div><input  type="text" id="url_input" placeholder="URL을 입력하세요" name="url_input_name" value={URLString} onChange={urlChange}/></div>
+          
+          </div> :
+          <div></div>
+        }
         <div className="api-grid-title">
           <div className="task-status">
             <table className="task-table">
               <colgroup>
                 <col width="100px"/>
+                <col width="200px"/>
                 <col width="*"/>
                 <col width="200px"/>
                 <col width="100px"/>
@@ -67,6 +108,7 @@ function TestPerformance(props:any){
               <thead>
                 <tr>
                   <th>TYPE</th>
+                  <th>TestCase</th>
                   <th>URL</th>
                   <th>Response</th>
                   <th>Delay</th>
@@ -217,4 +259,4 @@ function TestPerformance(props:any){
   )
 }
 
-export default TestPerformance;
+export default React.forwardRef(TestPerformance);

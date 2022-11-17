@@ -13,9 +13,7 @@ export default async function handler(
 ) {
   const { url } = req.query;
   const rawData = await fetch(url as string);
-
   const blob = await rawData.blob();
-  console.warn(blob);
 
   res.status(200).send({
     type:blob.type,

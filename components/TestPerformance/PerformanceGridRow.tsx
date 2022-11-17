@@ -9,8 +9,9 @@ function PerformanceGridRow(rowData:any,clickRef:any){
   const {
     type,
     url,
-
-    refIndex
+    tc,
+    refIndex,
+    vendor
   } = rowData;
 
   const [ status,  setStatus] = useState('READY'); // READY / START / COMPLETE 
@@ -20,15 +21,7 @@ function PerformanceGridRow(rowData:any,clickRef:any){
 
   },[])
 
-
-  // 진행상황 보려고 임시로 걸었음 ㅎ;
-  const testSleep = ()=>{
-    return new Promise(async(resolve,reject)=>{
-      setTimeout(()=>{
-        resolve(true);
-      },500);
-    })
-  }
+ 
   const trigger_API = useCallback(async(e:any)=>{
     try {
       e.preventDefault();
@@ -54,16 +47,26 @@ function PerformanceGridRow(rowData:any,clickRef:any){
         setDelay(totalTime);
       
       }
-      else if(type==='SQL'){
-        let {data} = await axios.get('/api/sql');
+      else if(type==='SQL' && vendor==='NCP'){
 
+        let {data} = await axios.get('/api/ncpsql');
 
-        console.warn(data);
         let endTime = performance.now();
         let totalTime = Math.round(endTime-startTime)+'ms';
 
-        setResponseData("test");
+        setResponseData(data.length);
         setDelay(totalTime)
+      }
+      else if(type==='SQL' && vendor==='AWS'){
+
+        let {data} = await axios.get('/api/awssql');
+
+        let endTime = performance.now();
+        let totalTime = Math.round(endTime-startTime)+'ms';
+
+
+        setResponseData(data.length);
+        setDelay(totalTime);
       }
       setStatus('COMPLETE');
 
@@ -93,7 +96,9 @@ function PerformanceGridRow(rowData:any,clickRef:any){
           <td >
                {type} 
           </td>
-
+          <td>
+                {tc}
+          </td>
           <td>
                 {url}
           </td>
@@ -144,6 +149,10 @@ function PerformanceGridRow(rowData:any,clickRef:any){
           text-align:center;
         }
         tbody tr td:nth-child(2){
+          text-align:center;
+        }
+
+        tbody tr td:nth-child(3){
           text-align:left;
         }
 

@@ -75,7 +75,7 @@ export default function MainLayout({children}:any){
         main{
           display:block;
           height:calc(100% - 85px);
-          max-width:1200px;
+          max-width:1400px;
           min-height:190px;
           margin:0 auto;
           overflow:unset;
