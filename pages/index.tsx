@@ -4,13 +4,11 @@ import { useCallback, useRef } from 'react';
 import BrowserComponent from '../components/browser'
 import TestPerformanceComponent from '../components/TestPerformance'
 
-
 let vendor=['AWS','NCP'];
 let NCPTestData = [
   {"type":"GET","TC":"GET NCP Object Storage","url":"https://sg.object.ncloudstorage.com/sg-ncp-obs-for-ngc/test_image.JPG"},
   {"type":"SQL","TC":"NCP Cloud DB For Mysql ","url":"SELECT * FROM \`ncp-performance-db\` "},
 ];
-
 
 let AWSTestData =[
   {"type":"GET","TC":"Get AWS S3","url":"https://sg-aws-s3.s3.ap-southeast-1.amazonaws.com/test_image.JPG"},
