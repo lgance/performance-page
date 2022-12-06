@@ -64,7 +64,8 @@ export default function MainLayout({children}:any){
           padding:10px 30px;
           box-shadow :0 0 1px rgba(0,0,0,0.25);
 
-          background-color:#FAF4C0;
+          // background-color:#FAF4C0;
+          background-color:#CEFBC9;
         }
         header .headerText{
           font-size:1.2rem;
