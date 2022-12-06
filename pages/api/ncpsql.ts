@@ -16,9 +16,6 @@ export default async function handler(
   const sql = `
    select * from ncpdb
   `;
-
-
-  
   const values:any = [];
   const conn:poolConnection = await dbms.DB.getPoolConnection();
 
