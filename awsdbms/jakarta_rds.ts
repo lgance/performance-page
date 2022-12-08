@@ -1,15 +1,15 @@
 
-// import 'dotenv';
-// import "dotenv/config";
+import 'dotenv';
+import "dotenv/config";
 import * as mysql from 'mysql2/promise';
 
 type poolConnection = mysql.PoolConnection;
 
 const db_config : any= {
-  "host":process.env.DB_HOST,
-  "user":process.env.DB_USERNAME,
-  "password":process.env.DB_PASSWORD,
-  "database":process.env.DB_NAME,
+  "host":process.env.AWS_JKT_DB_HOST,
+  "user":process.env.AWS_JKT_DB_NAME,
+  "password":process.env.AWS_JKT_DB_USERNAME,
+  "database":process.env.AWS_JKT_DB_PASSWORD,
   "dateStrings":'date'
 }
 

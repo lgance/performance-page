@@ -7,7 +7,6 @@ const AWSS3: NextPage = (props:any) => {
   const [src ,setSrc ]= useState('');
 
 
-
   useEffect(()=>{
     const rendering =async()=>{
       const blob = await new Blob([Uint8Array.from(arrayBuffer)], { type });
@@ -17,8 +16,6 @@ const AWSS3: NextPage = (props:any) => {
     }
     rendering();
     console.warn(totalTime);
-
-
   },[])
   return (
     <>
@@ -32,7 +29,9 @@ export async function getServerSideProps() {
   // 테스트 시작 
   let startTime = performance.now();
 
-  let testURL = 'https://sg-aws-s3.s3.ap-southeast-1.amazonaws.com/test_image.JPG'
+  let testURL = process.env.NCP_SGN_OBS;
+  
+  // fetch BLOB
   const rawData = await fetch(testURL as string);
   const blob = await rawData.blob();
 
@@ -42,15 +41,13 @@ export async function getServerSideProps() {
  // 확인 
  let totalTime = Math.round(endTime-startTime)+'ms';
 
- 
- // SSR 렌더링 ( 데이터 다 받은 후 렌더링 )
- let awsS3TimeString = `AWS S3  ${totalTime} URL : ${testURL} `
+ let ncpOBSTimeString = `NCP VPC SGN OBS ${totalTime} URL : ${testURL} `
 
+ // SSR 렌더링 ( 데이터 다 받은 후 렌더링 )
  return { props: {
   type:blob.type,
   arrayBuffer:Object.values(new Uint8Array(await blob.arrayBuffer())),
-  totalTime:awsS3TimeString
-
+  totalTime:ncpOBSTimeString
 } }
 }
 

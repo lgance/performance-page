@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import * as dbms from '../../awsdbms'
+import * as dbms from '../../awsdbms/sgn_rds'
 import * as mysql from 'mysql2/promise';
 
 import type { NextApiRequest, NextApiResponse } from 'next'

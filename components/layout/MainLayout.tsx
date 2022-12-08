@@ -1,11 +1,12 @@
 
+let region= process.env.VM_Region;
 
 export default function MainLayout({children}:any){
-  
   return (
   <>
     <header>
-        <span className="headerText">■● Performance Test </span>
+        <span className="headerText">■● Performance Test  </span>
+        <span className="vm-region">현재 VM 위치 [{region}]</span>
     </header>
     <main>
       <div className="mainWrapper">
@@ -66,11 +67,18 @@ export default function MainLayout({children}:any){
 
           // background-color:#FAF4C0;
           background-color:#CEFBC9;
+
+          justify-content: space-between;
         }
         header .headerText{
           font-size:1.2rem;
           font-weight:600;
-        
+        }
+
+        header .vm-region{
+          font-size:1.2rem;
+          font-weight:700;
+          color:#0100FF
         }
 
         main{

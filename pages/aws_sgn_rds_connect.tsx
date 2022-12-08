@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import * as mysql from 'mysql2/promise';
-import * as dbms from '../awsdbms'
+import * as dbms from '../awsdbms/sgn_rds'
 
 
 type poolConnection = mysql.PoolConnection;
@@ -42,7 +42,7 @@ export async function getServerSideProps() {
  let totalTime = Math.round(endTime-startTime)+'ms';
 
  // 길이 
- console.warn('AWS RDS GET DATA  ' +  result.length);
+ console.warn('AWS SGN RDS GET DATA  ' +  result.length);
 
  // SSR 렌더링 ( 데이터 다 받은 후 렌더링 )
  return { props: { dbConnectTime:totalTime } }

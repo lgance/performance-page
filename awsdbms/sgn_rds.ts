@@ -17,7 +17,7 @@ const db_config : any= {
 const pool:mysql.Pool = mysql.createPool(Object.assign(
 {
   waitForConnections: true,
-  connectionLimit: 5,
+  connectionLimit: 4,
   queueLimit: 0
 },db_config));
 

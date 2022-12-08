@@ -1,20 +1,17 @@
 import type { NextPage } from 'next'
 import * as mysql from 'mysql2/promise';
-import * as dbms from '../ncpdbms'
+import * as dbms from '../awsdbms/sgn_rds'
 
 
 type poolConnection = mysql.PoolConnection;
 
-
-const NCP_CDB: NextPage = (props:any) => {
-
+const AWS_RDS: NextPage = (props:any) => {
   let { dbConnectTime } = props;
- 
   return (
     <>
-       <>
-              {dbConnectTime}
-       </>
+        <>
+            {dbConnectTime}
+        </>
     </>
   )
 }
@@ -26,7 +23,7 @@ export async function getServerSideProps() {
 
   // DBMS Connector를 통한 GET DATA
   const sql = `
-  select * from ncpdb
+  select * from awsrdsdb
  `;
  const values:any = [];
  const conn:poolConnection = await dbms.DB.getPoolConnection();
@@ -43,10 +40,9 @@ export async function getServerSideProps() {
  let totalTime = Math.round(endTime-startTime)+'ms';
 
  // 길이 
- console.warn('NCP CDB GET DATA  ' +  result.length);
+ console.warn('AWS Jakarta RDS GET DATA  ' +  result.length);
 
  // SSR 렌더링 ( 데이터 다 받은 후 렌더링 )
  return { props: { dbConnectTime:totalTime } }
 }
-
-export default NCP_CDB;
+export default AWS_RDS;
