@@ -44,24 +44,16 @@ function PerformanceGridRow(rowData:any,clickRef:any){
       }
       else if(type==='SQL' && vendor==='NCP'){
 
-        let {data} = await axios.get('/api/ncpsql');
-
-        let endTime = performance.now();
-        let totalTime = Math.round(endTime-startTime)+'ms';
-
-        setResponseData(data.length);
-        setDelay(totalTime)
+        let { data } = await axios.get('/api/ncpsql');
+        setResponseData(data.data.length);
+        setDelay(data.totalTime)
       }
       else if(type==='SQL' && vendor==='AWS'){
 
         let {data} = await axios.get('/api/awssql');
 
-        let endTime = performance.now();
-        let totalTime = Math.round(endTime-startTime)+'ms';
-
-
-        setResponseData(data.length);
-        setDelay(totalTime);
+        setResponseData(data.data.length);
+        setDelay(data.totalTime)
       }
       setStatus('COMPLETE');
 

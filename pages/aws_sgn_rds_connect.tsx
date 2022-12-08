@@ -1,7 +1,5 @@
 import type { NextPage } from 'next'
 import * as mysql from 'mysql2/promise';
-import * as dbms from '../awsdbms/sgn_rds'
-
 
 type poolConnection = mysql.PoolConnection;
 
@@ -21,16 +19,24 @@ const AWS_RDS: NextPage = (props:any) => {
 
 export async function getServerSideProps() {
   // 테스트 시작 
-  let startTime = performance.now();
 
   // DBMS Connector를 통한 GET DATA
   const sql = `
   select * from awsrdsdb
  `;
- const values:any = [];
- const conn:poolConnection = await dbms.DB.getPoolConnection();
- const [rows] = await conn.execute(sql,values);
- await conn.release();
+
+ const connection = await mysql.createConnection({
+  "host":process.env.DB_HOST,
+  "user":process.env.DB_USERNAME,
+  "password":process.env.DB_PASSWORD,
+  "database":process.env.DB_NAME,
+});
+
+
+ // 테스트 시작 
+ let startTime = performance.now();
+ 
+ const [rows, fields] = await connection.execute(sql);
  
  // 테스트 종료 
  let endTime = performance.now();

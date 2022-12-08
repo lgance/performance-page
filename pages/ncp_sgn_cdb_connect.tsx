@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import * as mysql from 'mysql2/promise';
-import * as dbms from '../ncpdbms'
+// import * as dbms from '../ncpdbms'
 
 
 type poolConnection = mysql.PoolConnection;
@@ -21,18 +21,21 @@ const NCP_CDB: NextPage = (props:any) => {
 
 
 export async function getServerSideProps() {
-  // 테스트 시작 
-  let startTime = performance.now();
-
   // DBMS Connector를 통한 GET DATA
   const sql = `
   select * from ncpdb
  `;
- const values:any = [];
- const conn:poolConnection = await dbms.DB.getPoolConnection();
- const [rows] = await conn.execute(sql,values);
- await conn.release();
- 
+
+ const connection = await mysql.createConnection({
+  "host":process.env.DB_HOST,
+  "user":process.env.DB_USERNAME,
+  "password":process.env.DB_PASSWORD,
+  "database":process.env.DB_NAME,
+});
+
+ // 테스트 시작 
+ let startTime = performance.now();
+  const [rows, fields] = await connection.execute(sql);
  // 테스트 종료 
  let endTime = performance.now();
 

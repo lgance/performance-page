@@ -1,31 +1,32 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import * as dbms from '../../awsdbms/sgn_rds'
 import * as mysql from 'mysql2/promise';
-
 import type { NextApiRequest, NextApiResponse } from 'next'
-
-
-type poolConnection = mysql.PoolConnection;
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { url } = req.query;
-  
   const sql = `
    select * from awsrdsdb
   `;
+  const connection = await mysql.createConnection({
+    "host":process.env.AWS_SGN_DB_HOST,
+    "user":process.env.AWS_SGN_DB_USERNAME,
+    "password":process.env.AWS_SGN_DB_PASSWORD,
+    "database":process.env.AWS_SGN_DB_NAME,
+  });
 
-  
-  const values:any = [];
-  const conn:poolConnection = await dbms.DB.getPoolConnection();
+  let startTime = performance.now();
+  const [ rows ] = await connection.execute(sql);
+  let endTime = performance.now();
 
-  const [rows] = await conn.execute(sql,values);
+  let totalTime = Math.round(endTime-startTime)+'ms';
 
-  let result = JSON.parse(JSON.stringify(rows));
-  await conn.release();
+
   res.setHeader('Content-Type','application/json');
-  res.status(200).send(rows);
+  res.status(200).send({
+    data:rows,
+    totalTime:totalTime,
+  });
 }
   
