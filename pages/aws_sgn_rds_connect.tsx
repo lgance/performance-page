@@ -26,10 +26,10 @@ export async function getServerSideProps() {
  `;
 
  const connection = await mysql.createConnection({
-  "host":process.env.DB_HOST,
-  "user":process.env.DB_USERNAME,
-  "password":process.env.DB_PASSWORD,
-  "database":process.env.DB_NAME,
+  "host":process.env.AWS_SGN_DB_HOST,
+  "user":process.env.AWS_SGN_DB_USERNAME,
+  "password":process.env.AWS_SGN_DB_PASSWORD,
+  "database":process.env.AWS_SGN_DB_NAME,
 });
 
 
