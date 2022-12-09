@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import * as mysql from 'mysql2/promise';
-import * as dbms from '../awsdbms/sgn_rds'
 
 
 type poolConnection = mysql.PoolConnection;
@@ -18,18 +17,22 @@ const AWS_RDS: NextPage = (props:any) => {
 
 
 export async function getServerSideProps() {
-  // 테스트 시작 
-  let startTime = performance.now();
 
   // DBMS Connector를 통한 GET DATA
   const sql = `
-  select * from awsrdsdb
+  select * from awsrdsindo
  `;
- const values:any = [];
- const conn:poolConnection = await dbms.DB.getPoolConnection();
- const [rows] = await conn.execute(sql,values);
- await conn.release();
- 
+
+ const connection = await mysql.createConnection({
+  "host":process.env.AWS_JKT_DB_HOST,
+  "user":process.env.AWS_JKT_DB_USERNAME,
+  "password":process.env.AWS_JKT_DB_PASSWORD,
+  "database":process.env.AWS_JKT_DB_NAME,
+});
+
+ // 테스트 시작 
+ let startTime = performance.now();
+ const [ rows ] = await connection.execute(sql);
  // 테스트 종료 
  let endTime = performance.now();
 
@@ -40,7 +43,7 @@ export async function getServerSideProps() {
  let totalTime = Math.round(endTime-startTime)+'ms';
 
  // 길이 
- console.warn('AWS Jakarta RDS GET DATA  ' +  result.length);
+ console.warn('AWS Jakarta RDS GET DATA  '  +  result.length);
 
  // SSR 렌더링 ( 데이터 다 받은 후 렌더링 )
  return { props: { dbConnectTime:totalTime } }

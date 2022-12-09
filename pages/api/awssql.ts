@@ -19,7 +19,6 @@ export default async function handler(
   let startTime = performance.now();
   const [ rows ] = await connection.execute(sql);
   let endTime = performance.now();
-
   let totalTime = Math.round(endTime-startTime)+'ms';
 
 
