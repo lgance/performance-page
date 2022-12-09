@@ -28,6 +28,7 @@ export default function Layout({children}:any){
 
       .children_wrap{
         padding-left:10px;
+     
       }
     `}
     </style>

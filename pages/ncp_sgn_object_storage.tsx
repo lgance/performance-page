@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react';
+import Image from 'next/image'
 
 const AWSS3: NextPage = (props:any) => {
 
@@ -21,11 +22,16 @@ const AWSS3: NextPage = (props:any) => {
     }
     rendering();
     console.warn(totalTime);
-  },[])
+  },[type,arrayBuffer,totalTime])
   return (
     <>
         <div>
-                <img src={src} />
+        <Image 
+                 src={src}
+                  alt="Test Image"
+                  width={1920}
+                  height={1080}
+                 />
         </div>
     </>
   )

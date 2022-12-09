@@ -1,4 +1,6 @@
 import type { NextPage } from 'next'
+import Image from 'next/image'
+
 import { useEffect, useState } from 'react';
 
 // AWS Insonesia
@@ -23,11 +25,16 @@ const AWSS3: NextPage = (props:any) => {
     rendering();
     console.warn(totalTime);
 
-  },[])
+  },[type,arrayBuffer,totalTime])
   return (
     <>
-        <div>
-                <img src={src} />
+        <div >
+                <Image 
+                 src={src}
+                  alt="Test Image"
+                  width={1920}
+                  height={1080}
+                 />
         </div>
     </>
   )
