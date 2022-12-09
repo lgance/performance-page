@@ -16,6 +16,7 @@ export default async function handler(
     "database":process.env.AWS_SGN_DB_NAME,
   });
 
+  
   let startTime = performance.now();
   const [ rows ] = await connection.execute(sql);
   let endTime = performance.now();

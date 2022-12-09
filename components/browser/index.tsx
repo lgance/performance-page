@@ -111,7 +111,7 @@ function BrowserComponent(){
       // onCLS(console.log);
       // onFID(console.log);
       // onLCP(console.log);
-    },2000)
+    },5000)
 
   },[browserData])
 
