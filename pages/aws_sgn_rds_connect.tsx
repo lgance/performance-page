@@ -47,6 +47,10 @@ export async function getServerSideProps() {
  // 확인 
  let totalTime = Math.round(endTime-startTime)+'ms';
 
+ // 연결 해제 
+ await connection.end();
+
+
  // 길이 
  console.warn('AWS SGN RDS GET DATA  ' +  result.length);
 

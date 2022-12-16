@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import * as mysql from 'mysql2/promise';
+import { PerformanceNodeTiming } from 'perf_hooks';
 // import * as dbms from '../ncpdbms'
 
 
@@ -33,9 +34,11 @@ export async function getServerSideProps() {
   "database":process.env.DB_NAME,
 });
 
+
  // 테스트 시작 
  let startTime = performance.now();
-  const [rows, fields] = await connection.execute(sql);
+ 
+ const [rows, fields] = await connection.execute(sql);
  // 테스트 종료 
  let endTime = performance.now();
 
@@ -44,6 +47,9 @@ export async function getServerSideProps() {
 
  // 확인 
  let totalTime = Math.round(endTime-startTime)+'ms';
+
+ // 연결 해제 
+ await connection.end();
 
  // 길이 
  console.warn('NCP VPC SGN CDB GET DATA  ' +  result.length);

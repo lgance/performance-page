@@ -41,6 +41,7 @@ const AWSS3: NextPage = (props:any) => {
 }
 export async function getServerSideProps() {
 
+
   // GET Test URL 
   let testURL = process.env.AWS_JKT_S3;
 

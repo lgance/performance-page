@@ -42,8 +42,11 @@ export async function getServerSideProps() {
  // 확인 
  let totalTime = Math.round(endTime-startTime)+'ms';
 
+ // 연결 해제 
+ await connection.end();
  // 길이 
  console.warn('AWS Jakarta RDS GET DATA  '  +  result.length);
+
 
  // SSR 렌더링 ( 데이터 다 받은 후 렌더링 )
  return { props: { dbConnectTime:totalTime } }
